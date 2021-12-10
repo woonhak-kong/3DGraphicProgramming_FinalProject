@@ -269,6 +269,8 @@ struct Grid : public Shape // Flat grid on ground. Starts at 0,0,0 and increases
 				shape_vertices.push_back(col);
 				shape_vertices.push_back(row);
 				shape_vertices.push_back(0.0f);
+				shape_uvs.push_back(col);
+				shape_uvs.push_back(row);
 			}
 		}
 
@@ -306,18 +308,18 @@ struct Grid : public Shape // Flat grid on ground. Starts at 0,0,0 and increases
 			i++;
 		}
 
-		for (int i = 0; i < shape_vertices.size(); i += 3)
+		/*for (int i = 0; i < shape_vertices.size(); i += 3)
 		{
 			shape_uvs.push_back(shape_vertices[i] / quads * scale);
 			shape_uvs.push_back(shape_vertices[i + 1] / quads * scale);
-		}
+		}*/
 		ColorShape(1.0f, 1.0f, 1.0f);
 		CalcAverageNormals(shape_indices, shape_indices.size(), shape_vertices, shape_vertices.size());
 	}
 };
 struct Cube : public Shape
 {
-	Cube(int scale = 1)
+	Cube(float x = 1 ,float y = 1, float z = 1)
 	{
 		shape_indices = {
 			// Front.
@@ -374,37 +376,37 @@ struct Cube : public Shape
 		shape_uvs = {
 			// Front.
 			0.0f, 0.0f, 	// 0.
-			1.0f, 0.0f, 	// 1.
-			1.0f, 1.0f, 	// 2.
-			0.0f, 1.0f,		// 3.
+			x, 0.0f, 		// 1.
+			x, y, 			// 2.
+			0.0f, y,		// 3.
 			// Right.
 			0.0f, 0.0f, 	// 1.
-			1.0f, 0.0f, 	// 5.
-			1.0f, 1.0f, 	// 6.
-			0.0f, 1.0f,		// 2.
+			z, 0.0f, 		// 5.
+			z, y, 			// 6.
+			0.0f, y,		// 2.
 			// Back.
 			0.0f, 0.0f, 	// 5.
-			1.0f, 0.0f, 	// 4.
-			1.0f, 1.0f,		// 7.
-			0.0f, 1.0f,		// 6.
+			x, 0.0f, 		// 4.
+			x, y,			// 7.
+			0.0f, y,		// 6.
 			// Left.
 			0.0f, 0.0f,		// 4.
-			1.0f, 0.0f,		// 0.
-			1.0f, 1.0f,		// 3.
-			0.0f, 1.0f,		// 7.
+			z, 0.0f,		// 0.
+			z, y,			// 3.
+			0.0f, y,		// 7.
 			// Top.
-			0.0f, 0.0f,		// 7.
-			1.0f, 0.0f,		// 3.
-			1.0f, 1.0f,		// 2.
-			0.0f, 1.0f,		// 6.
+			0.0f, z,		// 7.
+			0.0f, 0.0f,		// 3.
+			x, 0.0f,		// 2.
+			x, z,			// 6.
 			// Bottom.
 			0.0f, 0.0f,		// 4.
-			1.0f, 0.0f,		// 5.
-			1.0f, 1.0f,		// 1.
-			0.0f, 1.0f		// 0.
+			x, 0.0f,		// 5.
+			x, z,			// 1.
+			0.0f, z			// 0.
 		};
-		for (unsigned i = 0; i < shape_uvs.size(); i++)
-			shape_uvs[i] *= scale;
+		/*for (unsigned i = 0; i < shape_uvs.size(); i++)
+			shape_uvs[i] *= scale;*/
 		ColorShape(1.0f, 1.0f, 1.0f);
 		CalcAverageNormals(shape_indices, shape_indices.size(), shape_vertices, shape_vertices.size());
 	}

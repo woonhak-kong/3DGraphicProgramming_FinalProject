@@ -40,6 +40,7 @@ using namespace std;
 #include "Shape.h"
 #include "Light.h"
 #include "Texture.h"
+#include "MazeShape.h"
 
 #define BUFFER_OFFSET(x)  ((const void*) (x))
 #define FPS 60
@@ -112,6 +113,7 @@ Cube g_cube;
 Prism g_prism(24);
 Sphere g_sphere(5);
 Cone g_cone(100);
+MazeShape rectangle;
 
 void timer(int); // Prototype.
 
@@ -173,6 +175,11 @@ void setupVAOs()
 	g_prism.BufferShape();
 	g_sphere.BufferShape();
 	g_cone.BufferShape();
+
+	rectangle.setModelID(&modelID);
+	rectangle.addShape(Cube(5,2,5), { glm::vec3(0,0,0) ,glm::vec3(5,2,5),glm::vec3(1,0,0),0 });
+	//rectangle.addShape(Cube(), { glm::vec3(0,0,-1) ,glm::vec3(1,1,1),glm::vec3(1,0,0),0 });
+	//rectangle.addShape(Cube(), { glm::vec3(0,1,0) ,glm::vec3(1,1,1),glm::vec3(1,0,0),0 });
 }
 
 void setupShaders()
@@ -232,6 +239,8 @@ void init(void)
 	setupLights();
 
 	setupVAOs();
+
+	glUniformMatrix4fv(projID, 1, GL_FALSE, &Projection[0][0]);
 
 	// Enable depth testing and face culling.
 	glEnable(GL_DEPTH_TEST);
@@ -317,11 +326,11 @@ void transformObject(glm::vec3 scale, glm::vec3 rotationAxis, float rotationAngl
 	Model = glm::scale(Model, scale);
 
 	// We must now update the View.
-	calculateView();
+	//calculateView();
 
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, &Model[0][0]);
-	glUniformMatrix4fv(viewID, 1, GL_FALSE, &View[0][0]);
-	glUniformMatrix4fv(projID, 1, GL_FALSE, &Projection[0][0]);
+	//glUniformMatrix4fv(viewID, 1, GL_FALSE, &View[0][0]);
+	//glUniformMatrix4fv(projID, 1, GL_FALSE, &Projection[0][0]);
 }
 
 //---------------------------------------------------------------------
@@ -330,6 +339,8 @@ void transformObject(glm::vec3 scale, glm::vec3 rotationAxis, float rotationAngl
 //
 void display(void)
 {
+	calculateView();
+	glUniformMatrix4fv(viewID, 1, GL_FALSE, &View[0][0]);
 	//you need this function here as light values might change
 	setupLights();
 
@@ -376,6 +387,10 @@ void display(void)
 	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), Y_AXIS, 45.0f, glm::vec3(10.0f, 0.5f, -6.0f));
 	g_cone.DrawShape(GL_TRIANGLES);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//waterTexture->Bind(GL_TEXTURE0);
+	rectangle.draw({ 3, 0, -5 }, waterTexture);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
 	glutSwapBuffers(); // Now for a potentially smoother render.
 }
