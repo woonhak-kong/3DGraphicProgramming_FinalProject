@@ -31,15 +31,16 @@ void MazeShape::draw(glm::vec3 position, Texture* texture)
 		std::cout << "ModelID is empty!!! " << std::endl;
 		return;
 	}
+	texture->Bind(GL_TEXTURE0);
 	for (int i = 0; i < m_shape.size(); i++)
 	{
-		texture->Bind(GL_TEXTURE0);
+
 		m_shape[i].first.RecolorShape(1.0f, 1.0f, 1.0f);
 		transformObject(m_shape[i].second.scale, m_shape[i].second.rotation, m_shape[i].second.rotationAngle
 			, { m_shape[i].second.position.x + position.x , m_shape[i].second.position.y + position.y, m_shape[i].second.position.z + position.z });
 		m_shape[i].first.DrawShape(GL_TRIANGLES);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
 
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
