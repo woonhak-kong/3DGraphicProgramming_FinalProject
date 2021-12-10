@@ -144,7 +144,7 @@ struct Sphere : public Shape
 	{
 
 		const int Ndivisions = subdivision;
-		const int NumTetrahedrons = pow(4.0, subdivision); // example: 4^5 = 1024 tetrahedrons      
+		const int NumTetrahedrons = pow(4.0, subdivision); // example: 4^5 = 1024 tetrahedrons
 		const int NumTriangles = 4 * NumTetrahedrons;  // 4 triangles / tetrahedron
 		const int NumVertices = 3 * NumTriangles;      // 3 vertices / triangle
 

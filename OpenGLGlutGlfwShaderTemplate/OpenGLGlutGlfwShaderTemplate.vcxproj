@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Maze.cpp" />
     <ClCompile Include="prepShader.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Week14-1-BlendingDemo.cpp" />
+    <ClCompile Include="GAME2012_Final_KongWoonhak.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Maze.h" />
     <ClInclude Include="prepShader.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="stb_image.h" />

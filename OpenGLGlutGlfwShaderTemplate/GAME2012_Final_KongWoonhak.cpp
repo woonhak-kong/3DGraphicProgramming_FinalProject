@@ -7,16 +7,16 @@
  *  SourceColor: the source color vector. This is the color output of the fragment shader.
  *  DestinationColor: the destination color vector. This is the color vector that is currently stored in the color buffer
  *  Now that we have enabled blending we need to tell OpenGL how it should actually blend.
- *  Imagine we have two triangles where we want to draw the semi-transparent blue triangle on top of the yellow triangle. 
- *  The yellow triangle will be the destination color (and therefore should be first in the color buffer) 
+ *  Imagine we have two triangles where we want to draw the semi-transparent blue triangle on top of the yellow triangle.
+ *  The yellow triangle will be the destination color (and therefore should be first in the color buffer)
  *  and we are now going to draw the blue triangle over the yellow triangle.
- *  If the blue triangle contributes 60% to the final color we want the yellow triangle to contribute 40% of the final color (e.g. 1.0 - 0.6). 
+ *  If the blue triangle contributes 60% to the final color we want the yellow triangle to contribute 40% of the final color (e.g. 1.0 - 0.6).
  *  color(RGBA) =(1.0,1.0,0.0,0.6)∗0.6+(0.0,0.0,1.0,1.0)∗(1−0.6)
  *  But how do we actually tell OpenGL to use factors? There is a function for this called glBlendFunc.
  *  Syntax: void glBlendFunc(sfactor, dfactor);
  *  Parameters:
- *  sfactor:A GLenum specifying a multiplier for the source blending factors. The default value is GL_ONE. 
- *  dfactor: A GLenum specifying a multiplier for the destination blending factors. The default value is GL_ZERO. 
+ *  sfactor:A GLenum specifying a multiplier for the source blending factors. The default value is GL_ONE.
+ *  dfactor: A GLenum specifying a multiplier for the destination blending factors. The default value is GL_ZERO.
  *  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
  *  @note press WASD for tracking the camera or zooming in and out
@@ -31,7 +31,7 @@ using namespace std;
 #include "stdlib.h"
 #include "time.h"
 #include <GL/glew.h>
-#include <GL/freeglut.h> 
+#include <GL/freeglut.h>
 #include "prepShader.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -233,7 +233,7 @@ void init(void)
 
 	setupVAOs();
 
-	// Enable depth testing and face culling. 
+	// Enable depth testing and face culling.
 	glEnable(GL_DEPTH_TEST);
 
 	glEnable(GL_BLEND);
@@ -268,10 +268,10 @@ void init(void)
 	//glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
 
 	//min(Dst, Src).
-	//glBlendEquation(GL_MIN); 
+	//glBlendEquation(GL_MIN);
 
 	 //max(Dst,Src).
-	//glBlendEquation(GL_MAX); 
+	//glBlendEquation(GL_MAX);
 
 
 	// Enable smoothing.
@@ -337,17 +337,17 @@ void display(void)
 	//glBindTexture(GL_TEXTURE_2D, blankID); // Use this texture for all shapes.
 
 
-	// Grid. 
+	// Grid.
 	blankTexture->Bind(GL_TEXTURE0);
 	g_grid.RecolorShape(1.0, 0.0, 1.0);
-	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	g_grid.DrawShape(GL_LINE_LOOP);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// Cube.
 	waterTexture->Bind(GL_TEXTURE0);
 	g_cube.RecolorShape(0.0, 1.0, 1.0);
-	transformObject(glm::vec3(2.0f, 2.0f, 2.0f), X_AXIS, 0.0f, glm::vec3(4.5f, 0.0f, -3.0f));
+	transformObject(glm::vec3(1, 1, 1), X_AXIS, 0.0f, glm::vec3(0, 0, 0));
 	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(8.0f, 2.0f, -1.0f));
 	g_cube.DrawShape(GL_TRIANGLES);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -532,8 +532,8 @@ void mouseMove(int x, int y)
 {
 	if (keys & KEY_MOUSECLICKED)
 	{
-		pitch += (GLfloat)((y - lastY) * TURNSPEED);
-		yaw -= (GLfloat)((x - lastX) * TURNSPEED);
+		pitch -= (GLfloat)((y - lastY) * TURNSPEED);
+		yaw += (GLfloat)((x - lastX) * TURNSPEED);
 		lastY = y;
 		lastX = x;
 	}
@@ -599,7 +599,7 @@ int main(int argc, char** argv)
 	glutMouseFunc(mouseClick);
 	glutMotionFunc(mouseMove); // Requires click to register.
 
-	atexit(clean); // This useful GLUT function calls specified function before exiting program. 
+	atexit(clean); // This useful GLUT function calls specified function before exiting program.
 	glutMainLoop();
 
 	return 0;
