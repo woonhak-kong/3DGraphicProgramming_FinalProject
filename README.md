@@ -1,1 +1,3 @@
-FinalProject
+### 3D Graphic Programming
+
+# Final Project
