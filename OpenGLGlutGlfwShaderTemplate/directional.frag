@@ -1,5 +1,8 @@
 #version 430 core
 
+#ifndef NUM_POINT_LIGHTS
+#define NUM_POINT_LIGHTS 5
+#endif
 in vec3 color;
 in vec2 texCoord;
 in vec3 normal;
@@ -12,17 +15,25 @@ struct Light
 	float diffuseStrength;
 };
 
-struct AmbientLight 
+struct AmbientLight
 {
 	Light base;
 };
 
-struct DirectionalLight 
+struct DirectionalLight
 {
 	Light base;
 	vec3 direction;
 };
 
+struct PointLight
+{
+	Light base;
+	vec3 position;
+	float constant;
+	float linear;
+	float quadratic;
+};
 
 struct Material
 {
@@ -35,6 +46,7 @@ uniform vec3 eyePosition;
 
 uniform AmbientLight aLight;
 uniform DirectionalLight dLight;
+uniform PointLight pLights[NUM_POINT_LIGHTS];
 uniform Material mat;
 
 vec4 calcAmbientLight(Light a)
@@ -69,6 +81,33 @@ vec4 calcDirectionalLight()
 	return calcLightByDirection(dLight.base, dLight.direction);
 }
 
+vec4 calcPointLight(PointLight p)
+{
+	vec3 direction = fragPos - p.position;
+	float distance = length(direction);
+	direction = normalize(direction);
+
+	vec4 color = calcLightByDirection(p.base, direction);
+	float attenuation = p.quadratic * distance * distance +
+		p.linear * distance +
+		p.constant;
+	//attenuation = 5.0;
+	return (color / attenuation);
+}
+
+//vec4 calcPointLight()
+//{
+//	vec3 direction = pLight.position - fragPos;
+//	float distance = length(direction);
+//	direction = normalize(direction);
+//
+//	vec4 color = calcLightByDirection(pLight.base, direction);
+//	float attenuation = 1 / (pLight.quadratic * distance * distance +
+//		pLight.linear * distance +
+//		pLight.constant);
+//
+//	return (color * attenuation);
+//}
 
 void main()
 {
@@ -76,6 +115,8 @@ void main()
 	vec4 calcColor;
 	calcColor += calcAmbientLight(aLight.base);
 	calcColor += calcDirectionalLight();
-	
+	for (int i = 0; i < NUM_POINT_LIGHTS; i++)
+		calcColor += calcPointLight(pLights[i]);
+
 	frag_color = texture(texture0, texCoord) * vec4(color, 1.0f) * calcColor;
 }

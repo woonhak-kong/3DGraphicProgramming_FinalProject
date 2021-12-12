@@ -91,7 +91,16 @@ glm::vec3 directionalLightPosition = glm::vec3(8.0f, 10.0f, 0.0f);
 // Light objects. Now OOP.
 AmbientLight aLight(
 	glm::vec3(1.0f, 1.0f, 1.0f),	// Diffuse color.
-	0.5f);							// Diffuse strength.
+	0.5f);
+// Diffuse strength.
+
+PointLight pLights[5] = { { glm::vec3(5.0f, 2, -5.0f), 50.0f, 1.0, 4.5f, 75.0f, glm::vec3(1.0f, 1.0f, 1.0f), 5 },
+						  { glm::vec3(25.0f, 2, -5.0f), 50.0f, 1.0, 4.5f, 75.0f, glm::vec3(1.0f, 1.0f, 1.0f), 5 },
+{ glm::vec3(5.0f, 2, -25.0f), 50.0f, 1.0, 4.5f, 75.0f, glm::vec3(1.0f, 1.0f, 1.0f), 5 },
+{ glm::vec3(25.0f, 2, -25.0f), 50.0f, 1.0, 4.5f, 75.0f, glm::vec3(1.0f, 1.0f, 1.0f), 5 },
+{ glm::vec3(15.0f, 2, -15.0f), 50.0f, 1.0, 4.5f, 75.0f, glm::vec3(1.0f, 1.0f, 1.0f), 0 }
+};
+
 
 DirectionalLight dLight(
 	glm::vec3(1.0f, 1.0f, 1.0f),	// direction using the origin
@@ -203,6 +212,44 @@ void setupLights()
 	glUniform3f(glGetUniformLocation(program, "dLight.base.diffuseColor"), dLight.diffuseColor.x, dLight.diffuseColor.y, dLight.diffuseColor.z);
 	glUniform1f(glGetUniformLocation(program, "dLight.base.diffuseStrength"), dLight.diffuseStrength);
 	glUniform3f(glGetUniformLocation(program, "dLight.direction"), dLight.direction.x, dLight.direction.y, dLight.direction.z);
+
+	// Setting point light.
+
+	// Setting point lights.
+	glUniform3f(glGetUniformLocation(program, "pLights[0].base.diffuseColor"), pLights[0].diffuseColor.x, pLights[0].diffuseColor.y, pLights[0].diffuseColor.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[0].base.diffuseStrength"), pLights[0].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[0].position"), pLights[0].position.x, pLights[0].position.y, pLights[0].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[0].constant"), pLights[0].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[0].linear"), pLights[0].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[0].quadratic"), pLights[0].quadratic);
+
+	glUniform3f(glGetUniformLocation(program, "pLights[1].base.diffuseColor"), pLights[1].diffuseColor.x, pLights[1].diffuseColor.y, pLights[1].diffuseColor.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[1].base.diffuseStrength"), pLights[1].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[1].position"), pLights[1].position.x, pLights[1].position.y, pLights[1].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[1].constant"), pLights[1].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[1].linear"), pLights[1].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[1].quadratic"), pLights[1].quadratic);
+
+	glUniform3f(glGetUniformLocation(program, "pLights[2].base.diffuseColor"), pLights[2].diffuseColor.x, pLights[2].diffuseColor.y, pLights[2].diffuseColor.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[2].base.diffuseStrength"), pLights[2].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[2].position"), pLights[2].position.x, pLights[2].position.y, pLights[2].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[2].constant"), pLights[2].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[2].linear"), pLights[2].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[2].quadratic"), pLights[2].quadratic);
+
+	glUniform3f(glGetUniformLocation(program, "pLights[3].base.diffuseColor"), pLights[3].diffuseColor.x, pLights[3].diffuseColor.y, pLights[3].diffuseColor.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[3].base.diffuseStrength"), pLights[3].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[3].position"), pLights[3].position.x, pLights[3].position.y, pLights[3].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[3].constant"), pLights[3].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[3].linear"), pLights[3].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[3].quadratic"), pLights[3].quadratic);
+
+	glUniform3f(glGetUniformLocation(program, "pLights[4].base.diffuseColor"), pLights[4].diffuseColor.x, pLights[4].diffuseColor.y, pLights[4].diffuseColor.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[4].base.diffuseStrength"), pLights[4].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[4].position"), pLights[4].position.x, pLights[4].position.y, pLights[4].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[4].constant"), pLights[4].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[4].linear"), pLights[4].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[4].quadratic"), pLights[4].quadratic);
 
 }
 
