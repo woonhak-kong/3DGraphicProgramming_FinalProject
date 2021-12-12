@@ -108,7 +108,7 @@ GLfloat pitch, yaw;
 int lastX, lastY;
 
 // Geometry data.
-Grid g_grid(30,1);
+Grid g_grid(31,1);
 //Prism g_prism(24);
 //Sphere g_sphere(5);
 //Cone g_cone(100);
@@ -116,6 +116,7 @@ Grid g_grid(30,1);
 MazeShape hedges;
 
 void timer(int); // Prototype.
+void makeMaze();
 
 Texture* pTexture = NULL;
 Texture* blankTexture = NULL;
@@ -128,7 +129,7 @@ void resetView()
 	position = glm::vec3(15.0f, 40.0f, 10.0f);
 	frontVec = glm::vec3(0.0f, 0.0f, -1.0f);
 	worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-	pitch = -80.0f;
+	pitch = -60;
 	yaw = -90.0f;
 }
 
@@ -174,15 +175,13 @@ void setupLights()
 
 void setupVAOs()
 {
+	int scaleX = 1;
+	int scaleZ = 1;
 	// All VAO/VBO data now in Shape.h! But we still need to do this AFTER OpenGL is initialized.
 	g_grid.BufferShape();
 
+	makeMaze();
 
-	hedges.setModelID(&modelID);
-	// row 0
-	hedges.addShape(Cube(30, 2, 1), { glm::vec3(0,0,0) ,glm::vec3(30,2,1),glm::vec3(1,0,0),0 });
-	// row 1
-	hedges.addShape(Cube(1, 2, 1), { glm::vec3(0,0,-1) ,glm::vec3(1,2,1),glm::vec3(1,0,0),0 });
 }
 
 void setupShaders()
@@ -401,6 +400,389 @@ void display(void)
 void idle() // Not even called.
 {
 	glutPostRedisplay();
+}
+
+void makeMaze()
+{
+	int scaleX = 1;
+	int scaleZ = 1;
+
+	hedges.setModelID(&modelID);
+	// row 0
+	hedges.addShape(Cube(31, 2, 1), { glm::vec3(0,0,0) ,glm::vec3(31,2,1),glm::vec3(1,0,0),0 });
+	// row 1
+	hedges.addShape(Cube(1, 2, 1), { glm::vec3(0,0,-1) ,glm::vec3(1,2,1),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(1, 2, 1), { glm::vec3(2,0,-1) ,glm::vec3(1,2,1),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(1, 2, 1), { glm::vec3(12,0,-1) ,glm::vec3(1,2,1),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(1, 2, 1), { glm::vec3(24,0,-1) ,glm::vec3(1,2,1),glm::vec3(1,0,0),0 });
+	// row 2
+	hedges.addShape(Cube(1, 2, 1), { glm::vec3(0,0,-2) ,glm::vec3(1,2,1),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(3, 2, 1), { glm::vec3(2,0,-2) ,glm::vec3(3,2,1),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(13, 2, 1), { glm::vec3(6,0,-2) ,glm::vec3(13,2,1),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(3, 2, 1), { glm::vec3(20,0,-2) ,glm::vec3(3,2,1),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(1, 2, 1), { glm::vec3(24,0,-2) ,glm::vec3(1,2,1),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(5, 2, 1), { glm::vec3(26,0,-2) ,glm::vec3(5,2,1),glm::vec3(1,0,0),0 });
+	// row 3
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-3) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-3) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-3) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(14,0,-3) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-3) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-3) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-3) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-3) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	// row 4
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(12,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(14,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 5;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-4) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 5
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(12,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(16,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-5) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 6
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 5;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 7;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(16,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-6) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 7
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-7) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-7) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-7) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-7) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(16,0,-7) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-7) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-7) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-7) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 8
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-8) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-8) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-8) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 13;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-8) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-8) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 5;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-8) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-8) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-8) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 9
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-9) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-9) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-9) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-9) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-9) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-9) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-9) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 10
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-10) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-10) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-10) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 13;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-10) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-10) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 5;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-10) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-10) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 11
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-11) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-11) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-11) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-11) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-11) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-11) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-11) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-11) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-11) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 12
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-12) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-12) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-12) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-12) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-12) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-12) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-12) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-12) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-12) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 13
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-13) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-13) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-13) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-13) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-13) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-13) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-13) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-13) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-13) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 14
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-14) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-14) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-14) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-14) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-14) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-14) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-14) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-14) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-14) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 15
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-15) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-15) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-15) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-15) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-15) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-15) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 16
+	scaleX = 5;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-16) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-16) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-16) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-16) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-16) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 17
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-17) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-17) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-17) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-17) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-17) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-17) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 18
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-18) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-18) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 7;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-18) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-18) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-18) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-18) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-18) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 19
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-19) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-19) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-19) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-19) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-19) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-19) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-19) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 20
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-20) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-20) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-20) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(12,0,-20) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 7;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(16,0,-20) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-20) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-20) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-20) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 21
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-21) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-21) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(14,0,-21) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-21) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-21) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-21) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-21) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 22
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-22) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 7;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-22) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(12,0,-22) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(14,0,-22) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-22) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-22) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-22) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-22) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-22) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 23
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-23) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-23) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(12,0,-23) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(14,0,-23) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-23) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-23) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-23) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-23) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 24
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(12,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(14,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 7;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(16,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 5;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(24,0,-24) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 25
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(12,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(14,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-25) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 26
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(16,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(4,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(8,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(12,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 5;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-26) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 27
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(6,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(10,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(12,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(16,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(18,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(26,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-27) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 28
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-28) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(20,0,-28) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(28,0,-28) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-28) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 11;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-28) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 5;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(14,0,-28) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-28) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 29
+	scaleX = 1;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(2,0,-29) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(22,0,-29) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(30,0,-29) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+	// row 30
+	scaleX = 31;
+	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-30) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
+
+
 }
 
 void parseKeys()
