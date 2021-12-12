@@ -892,10 +892,10 @@ void makeMaze()
 	scaleZ = 2;
 	stair.addShape(Cube(scaleX, 0.5f, scaleZ), { glm::vec3(15,0.5,-2.5) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
 
-	scaleX = 2.4;
+	scaleX = 2.5;
 	scaleZ = 0.1;
 	door.addShape(Cube(scaleX, 4, scaleZ), { glm::vec3(18,1,-1.5) ,glm::vec3(scaleX,4,scaleZ),glm::vec3(1,0,0),0 });
-	door.addShape(Cube(scaleX, 4, scaleZ), { glm::vec3(20.6,1,-1.5) ,glm::vec3(scaleX,4,scaleZ),glm::vec3(1,0,0),0 });
+	door.addShape(Cube(scaleX, 4, scaleZ), { glm::vec3(21,1,-1.5) ,glm::vec3(scaleX,4,scaleZ),glm::vec3(1,0,0),0 });
 
 
 	scaleX = 9;
