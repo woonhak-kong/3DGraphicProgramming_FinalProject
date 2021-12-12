@@ -1131,7 +1131,7 @@ int main(int argc, char** argv)
 	//the top-left corner of the display
 	glutInitWindowPosition(0, 0);
 
-	glutCreateWindow("Blending Demo");
+	glutCreateWindow("GAME2012_Final_KongWoonhak");
 
 	glewInit();	//Initializes the glew and prepares the drawing pipeline.
 
