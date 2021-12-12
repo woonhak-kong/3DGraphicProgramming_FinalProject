@@ -97,7 +97,7 @@ DirectionalLight dLight(
 	glm::vec3(1.0f, 1.0f, 1.0f),	// direction using the origin
   //directionalLightPosition,
 	glm::vec3(1.0f, 1.0f, 1.0f),	// Diffuse color.
-	1.0f);							// Diffuse strength.
+	0.0f);							// Diffuse strength.
 
 Material mat = { 0.5f, 8 }; // Alternate way to construct an object.
 
@@ -119,6 +119,7 @@ MazeShape wall;
 MazeShape roof;
 MazeShape door;
 MazeShape stair;
+MazeShape middleRoom;
 
 void timer(int); // Prototype.
 void makeMaze();
@@ -280,7 +281,7 @@ void init(void)
 	// Enable depth testing and face culling.
 	glEnable(GL_DEPTH_TEST);
 
-	glEnable(GL_BLEND);
+	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_ONE, GL_ZERO);
 
 	//we want to take the alpha of the source color vector for the source factor and 1−alpha of the same color vector for the destination factor.
@@ -387,7 +388,7 @@ void display(void)
 	dirtTexture->Bind(GL_TEXTURE0);
 	g_grid.RecolorShape(1.0, 1.0, 1.0);
 	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(-5.0f, 0.0f, 6.0f));
-	g_grid.DrawShape(GL_LINE_LOOP);
+	g_grid.DrawShape(GL_TRIANGLES);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//// Cube.
@@ -435,6 +436,8 @@ void display(void)
 
 	door.draw({ -5, 0, 6 }, woodTexture);
 
+	middleRoom.draw({ 0, 0, 0 }, stoneFloorTexture);
+
 	glutSwapBuffers(); // Now for a potentially smoother render.
 }
 
@@ -453,6 +456,7 @@ void makeMaze()
 	roof.setModelID(&modelID);
 	door.setModelID(&modelID);
 	stair.setModelID(&modelID);
+	middleRoom.setModelID(&modelID);
 	// row 0
 	hedges.addShape(Cube(31, 2, 1), { glm::vec3(0,0,0) ,glm::vec3(31,2,1),glm::vec3(1,0,0),0 });
 	// row 1
@@ -895,6 +899,22 @@ void makeMaze()
 	scaleZ = 0.1;
 	door.addShape(Cube(scaleX, 4, scaleZ), { glm::vec3(18,1,-1.5) ,glm::vec3(scaleX,4,scaleZ),glm::vec3(1,0,0),0 });
 	door.addShape(Cube(scaleX, 4, scaleZ), { glm::vec3(20.6,1,-1.5) ,glm::vec3(scaleX,4,scaleZ),glm::vec3(1,0,0),0 });
+
+
+	scaleX = 9;
+	scaleZ = 9;
+	middleRoom.addShape(Cube(scaleX, 0.5, scaleZ), { glm::vec3(11,0,-19) ,glm::vec3(scaleX,0.5,scaleZ),glm::vec3(1,0,0),0 });
+
+	scaleX = 1;
+	scaleZ = 1;
+	middleRoom.addShape(Cube(scaleX, 3, scaleZ), { glm::vec3(13,0.5,-17) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+	middleRoom.addShape(Cube(scaleX, 3, scaleZ), { glm::vec3(17,0.5,-17) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+	middleRoom.addShape(Cube(scaleX, 3, scaleZ), { glm::vec3(13,0.5,-13) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+	middleRoom.addShape(Cube(scaleX, 3, scaleZ), { glm::vec3(17,0.5,-13) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+
+	scaleX = 9;
+	scaleZ = 9;
+	middleRoom.addShape(Cube(scaleX, 0.5, scaleZ), { glm::vec3(11,3.5,-19) ,glm::vec3(scaleX,0.5,scaleZ),glm::vec3(1,0,0),0 });
 
 }
 
