@@ -240,8 +240,7 @@ void setupLights()
 
 void setupVAOs()
 {
-	int scaleX = 1;
-	int scaleZ = 1;
+
 	// All VAO/VBO data now in Shape.h! But we still need to do this AFTER OpenGL is initialized.
 	g_grid.BufferShape();
 	//g_cube.BufferShape();
@@ -447,7 +446,8 @@ void idle() // Not even called.
 
 void makeMaze()
 {
-
+	int scaleX = 1;
+	int scaleZ = 1;
 	hedges.setModelID(&modelID);
 	wall.setModelID(&modelID);
 	roof.setModelID(&modelID);
