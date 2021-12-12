@@ -446,8 +446,8 @@ void idle() // Not even called.
 
 void makeMaze()
 {
-	int scaleX = 1;
-	int scaleZ = 1;
+	float scaleX = 1;
+	float scaleZ = 1;
 	hedges.setModelID(&modelID);
 	wall.setModelID(&modelID);
 	roof.setModelID(&modelID);
