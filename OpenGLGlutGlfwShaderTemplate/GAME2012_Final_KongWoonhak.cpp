@@ -94,7 +94,7 @@ AmbientLight aLight(
 	0.5f);							// Diffuse strength.
 
 DirectionalLight dLight(
-	glm::vec3(0.0f, 0.0f, 1.0f),	// direction using the origin
+	glm::vec3(1.0f, 1.0f, 1.0f),	// direction using the origin
   //directionalLightPosition,
 	glm::vec3(1.0f, 1.0f, 1.0f),	// Diffuse color.
 	1.0f);							// Diffuse strength.
@@ -108,26 +108,27 @@ GLfloat pitch, yaw;
 int lastX, lastY;
 
 // Geometry data.
-Grid g_grid(16,3);
-Cube g_cube;
-Prism g_prism(24);
-Sphere g_sphere(5);
-Cone g_cone(100);
-MazeShape rectangle;
+Grid g_grid(30,1);
+//Prism g_prism(24);
+//Sphere g_sphere(5);
+//Cone g_cone(100);
+//MazeShape rectangle;
+MazeShape hedges;
 
 void timer(int); // Prototype.
 
 Texture* pTexture = NULL;
 Texture* blankTexture = NULL;
 Texture* waterTexture = NULL;
+Texture* hedgeTexture = nullptr;
 GLuint textureID;
 
 void resetView()
 {
-	position = glm::vec3(8.0f, 5.0f, 20.0f);
+	position = glm::vec3(15.0f, 40.0f, 10.0f);
 	frontVec = glm::vec3(0.0f, 0.0f, -1.0f);
 	worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-	pitch = 0.0f;
+	pitch = -80.0f;
 	yaw = -90.0f;
 }
 
@@ -142,6 +143,10 @@ void loadTextures()
 	blankTexture = new Texture(GL_TEXTURE_2D, "Media/blank.jpg", GL_RGB);
 	blankTexture->Bind(GL_TEXTURE0);
 	blankTexture->Load();
+
+	hedgeTexture = new Texture(GL_TEXTURE_2D, "Media/grasshedge.jpg", GL_RGB);
+	hedgeTexture->Bind(GL_TEXTURE0);
+	hedgeTexture->Load();
 
 	//! attention: water picture has alpha channel!
 	waterTexture = new Texture(GL_TEXTURE_2D, "Media/Water03.png", GL_RGBA);
@@ -171,15 +176,13 @@ void setupVAOs()
 {
 	// All VAO/VBO data now in Shape.h! But we still need to do this AFTER OpenGL is initialized.
 	g_grid.BufferShape();
-	g_cube.BufferShape();
-	g_prism.BufferShape();
-	g_sphere.BufferShape();
-	g_cone.BufferShape();
 
-	rectangle.setModelID(&modelID);
-	rectangle.addShape(Cube(5,2,5), { glm::vec3(0,0,0) ,glm::vec3(5,2,5),glm::vec3(1,0,0),0 });
-	//rectangle.addShape(Cube(), { glm::vec3(0,0,-1) ,glm::vec3(1,1,1),glm::vec3(1,0,0),0 });
-	//rectangle.addShape(Cube(), { glm::vec3(0,1,0) ,glm::vec3(1,1,1),glm::vec3(1,0,0),0 });
+
+	hedges.setModelID(&modelID);
+	// row 0
+	hedges.addShape(Cube(30, 2, 1), { glm::vec3(0,0,0) ,glm::vec3(30,2,1),glm::vec3(1,0,0),0 });
+	// row 1
+	hedges.addShape(Cube(1, 2, 1), { glm::vec3(0,0,-1) ,glm::vec3(1,2,1),glm::vec3(1,0,0),0 });
 }
 
 void setupShaders()
@@ -355,41 +358,41 @@ void display(void)
 	g_grid.DrawShape(GL_LINE_LOOP);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// Cube.
-	waterTexture->Bind(GL_TEXTURE0);
-	g_cube.RecolorShape(0.0, 1.0, 1.0);
-	transformObject(glm::vec3(1, 1, 1), X_AXIS, 0.0f, glm::vec3(0, 0, 0));
-	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(8.0f, 2.0f, -1.0f));
-	g_cube.DrawShape(GL_TRIANGLES);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//// Cube.
+	//waterTexture->Bind(GL_TEXTURE0);
+	//g_cube.RecolorShape(0.0, 1.0, 1.0);
+	//transformObject(glm::vec3(1, 1, 1), X_AXIS, 0.0f, glm::vec3(0, 0, 0));
+	////transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(8.0f, 2.0f, -1.0f));
+	//g_cube.DrawShape(GL_TRIANGLES);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
-	angle += 2.0f;
+	//angle += 2.0f;
 
-	// Sphere.
-	pTexture->Bind(GL_TEXTURE0);
-	g_prism.RecolorShape(1.0, 1.0, 0.0);
-	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, angle, directionalLightPosition);
-	g_sphere.DrawShape(GL_TRIANGLES);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//// Sphere.
+	//pTexture->Bind(GL_TEXTURE0);
+	//g_prism.RecolorShape(1.0, 1.0, 0.0);
+	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, angle, directionalLightPosition);
+	//g_sphere.DrawShape(GL_TRIANGLES);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
-	// Prism.
-	blankTexture->Bind(GL_TEXTURE0);
-	g_prism.RecolorShape(0.0, 1.0, 0.0);
-	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(10.0f, 0.0f, -2.0f));
-	glUniform1f(glGetUniformLocation(program, "mat.specularStrength"), 1.0f);
-	glUniform1f(glGetUniformLocation(program, "mat.shininess"), 128);
-	g_prism.DrawShape(GL_TRIANGLES);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	// Prism.
-	blankTexture->Bind(GL_TEXTURE0);
+	//// Prism.
+	//blankTexture->Bind(GL_TEXTURE0);
 	//g_prism.RecolorShape(0.0, 1.0, 0.0);
-	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), Y_AXIS, 45.0f, glm::vec3(10.0f, 0.5f, -6.0f));
-	g_cone.DrawShape(GL_TRIANGLES);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(10.0f, 0.0f, -2.0f));
+	//glUniform1f(glGetUniformLocation(program, "mat.specularStrength"), 1.0f);
+	//glUniform1f(glGetUniformLocation(program, "mat.shininess"), 128);
+	//g_prism.DrawShape(GL_TRIANGLES);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+
+	//// Prism.
+	//blankTexture->Bind(GL_TEXTURE0);
+	////g_prism.RecolorShape(0.0, 1.0, 0.0);
+	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), Y_AXIS, 45.0f, glm::vec3(10.0f, 0.5f, -6.0f));
+	//g_cone.DrawShape(GL_TRIANGLES);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
 	//waterTexture->Bind(GL_TEXTURE0);
-	rectangle.draw({ 3, 0, -5 }, waterTexture);
+	hedges.draw({ 0, 0, 0 }, hedgeTexture);
 	//glBindTexture(GL_TEXTURE_2D, 0);
 
 	glutSwapBuffers(); // Now for a potentially smoother render.
