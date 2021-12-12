@@ -118,7 +118,7 @@ int lastX, lastY;
 
 // Geometry data.
 Grid g_grid(41,1);
-Cube g_cube(1);
+//Cube g_cube(1);
 //Prism g_prism(24);
 //Sphere g_sphere(5);
 //Cone g_cone(100);
@@ -259,7 +259,7 @@ void setupVAOs()
 	int scaleZ = 1;
 	// All VAO/VBO data now in Shape.h! But we still need to do this AFTER OpenGL is initialized.
 	g_grid.BufferShape();
-	g_cube.BufferShape();
+	//g_cube.BufferShape();
 
 	makeMaze();
 
@@ -437,39 +437,6 @@ void display(void)
 	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(-5.0f, 0.0f, 6.0f));
 	g_grid.DrawShape(GL_TRIANGLES);
 	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//// Cube.
-	waterTexture->Bind(GL_TEXTURE0);
-	g_cube.RecolorShape(0.0, 1.0, 1.0);
-	transformObject(glm::vec3(0.5f, 1, 0.5f), X_AXIS, 0.0f, glm::vec3(0, 10, 0));
-	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(8.0f, 2.0f, -1.0f));
-	g_cube.DrawShape(GL_TRIANGLES);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//angle += 2.0f;
-
-	//// Sphere.
-	//pTexture->Bind(GL_TEXTURE0);
-	//g_prism.RecolorShape(1.0, 1.0, 0.0);
-	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, angle, directionalLightPosition);
-	//g_sphere.DrawShape(GL_TRIANGLES);
-	//glBindTexture(GL_TEXTURE_2D, 0);
-
-	//// Prism.
-	//blankTexture->Bind(GL_TEXTURE0);
-	//g_prism.RecolorShape(0.0, 1.0, 0.0);
-	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(10.0f, 0.0f, -2.0f));
-	//glUniform1f(glGetUniformLocation(program, "mat.specularStrength"), 1.0f);
-	//glUniform1f(glGetUniformLocation(program, "mat.shininess"), 128);
-	//g_prism.DrawShape(GL_TRIANGLES);
-	//glBindTexture(GL_TEXTURE_2D, 0);
-
-	//// Prism.
-	//blankTexture->Bind(GL_TEXTURE0);
-	////g_prism.RecolorShape(0.0, 1.0, 0.0);
-	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), Y_AXIS, 45.0f, glm::vec3(10.0f, 0.5f, -6.0f));
-	//g_cone.DrawShape(GL_TRIANGLES);
-	//glBindTexture(GL_TEXTURE_2D, 0);
 
 	//waterTexture->Bind(GL_TEXTURE0);
 	hedges.draw({ 0, 0, 0 }, hedgeTexture);
