@@ -44,7 +44,7 @@ using namespace std;
 
 #define BUFFER_OFFSET(x)  ((const void*) (x))
 #define FPS 60
-#define MOVESPEED 0.1f
+#define MOVESPEED 0.2f
 #define TURNSPEED 0.05f
 #define X_AXIS glm::vec3(1,0,0)
 #define Y_AXIS glm::vec3(0,1,0)
@@ -108,12 +108,15 @@ GLfloat pitch, yaw;
 int lastX, lastY;
 
 // Geometry data.
-Grid g_grid(31,1);
+Grid g_grid(41,1);
+Cube g_cube(1);
 //Prism g_prism(24);
 //Sphere g_sphere(5);
 //Cone g_cone(100);
 //MazeShape rectangle;
 MazeShape hedges;
+MazeShape wall;
+MazeShape roof;
 
 void timer(int); // Prototype.
 void makeMaze();
@@ -122,11 +125,15 @@ Texture* pTexture = NULL;
 Texture* blankTexture = NULL;
 Texture* waterTexture = NULL;
 Texture* hedgeTexture = nullptr;
+Texture* stoneTexture = nullptr;
+Texture* dirtTexture = nullptr;
+Texture* roofTexture = nullptr;
+Texture* woodTexture = nullptr;
 GLuint textureID;
 
 void resetView()
 {
-	position = glm::vec3(15.0f, 40.0f, 10.0f);
+	position = glm::vec3(15.0f, 40.0f, 15.0f);
 	frontVec = glm::vec3(0.0f, 0.0f, -1.0f);
 	worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	pitch = -60;
@@ -154,6 +161,19 @@ void loadTextures()
 	waterTexture->Bind(GL_TEXTURE0);
 	waterTexture->Load();
 
+	stoneTexture = new Texture(GL_TEXTURE_2D, "Media/stone2.png", GL_RGBA);
+	stoneTexture->Bind(GL_TEXTURE0);
+	stoneTexture->Load();
+
+	dirtTexture = new Texture(GL_TEXTURE_2D, "Media/dirt2.png", GL_RGBA);
+	dirtTexture->Bind(GL_TEXTURE0);
+	dirtTexture->Load();
+
+	roofTexture = new Texture(GL_TEXTURE_2D, "Media/roof.jpg", GL_RGB);
+	roofTexture->Bind(GL_TEXTURE0);
+	roofTexture->Load();
+
+
 }
 
 void setupLights()
@@ -179,6 +199,7 @@ void setupVAOs()
 	int scaleZ = 1;
 	// All VAO/VBO data now in Shape.h! But we still need to do this AFTER OpenGL is initialized.
 	g_grid.BufferShape();
+	g_cube.BufferShape();
 
 	makeMaze();
 
@@ -351,19 +372,19 @@ void display(void)
 
 
 	// Grid.
-	blankTexture->Bind(GL_TEXTURE0);
-	g_grid.RecolorShape(1.0, 0.0, 1.0);
-	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	dirtTexture->Bind(GL_TEXTURE0);
+	g_grid.RecolorShape(1.0, 1.0, 1.0);
+	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(-5.0f, 0.0f, 6.0f));
 	g_grid.DrawShape(GL_LINE_LOOP);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//// Cube.
-	//waterTexture->Bind(GL_TEXTURE0);
-	//g_cube.RecolorShape(0.0, 1.0, 1.0);
-	//transformObject(glm::vec3(1, 1, 1), X_AXIS, 0.0f, glm::vec3(0, 0, 0));
-	////transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(8.0f, 2.0f, -1.0f));
-	//g_cube.DrawShape(GL_TRIANGLES);
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	waterTexture->Bind(GL_TEXTURE0);
+	g_cube.RecolorShape(0.0, 1.0, 1.0);
+	transformObject(glm::vec3(0.5f, 1, 0.5f), X_AXIS, 0.0f, glm::vec3(0, 10, 0));
+	//transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(8.0f, 2.0f, -1.0f));
+	g_cube.DrawShape(GL_TRIANGLES);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//angle += 2.0f;
 
@@ -394,6 +415,10 @@ void display(void)
 	hedges.draw({ 0, 0, 0 }, hedgeTexture);
 	//glBindTexture(GL_TEXTURE_2D, 0);
 
+	wall.draw({ -5, 0, 6 }, stoneTexture);
+
+	roof.draw({ -5, 0, 6 }, roofTexture);
+
 	glutSwapBuffers(); // Now for a potentially smoother render.
 }
 
@@ -404,10 +429,12 @@ void idle() // Not even called.
 
 void makeMaze()
 {
-	int scaleX = 1;
-	int scaleZ = 1;
+	float scaleX = 1;
+	float scaleZ = 1;
 
 	hedges.setModelID(&modelID);
+	wall.setModelID(&modelID);
+	roof.setModelID(&modelID);
 	// row 0
 	hedges.addShape(Cube(31, 2, 1), { glm::vec3(0,0,0) ,glm::vec3(31,2,1),glm::vec3(1,0,0),0 });
 	// row 1
@@ -782,6 +809,63 @@ void makeMaze()
 	scaleX = 31;
 	hedges.addShape(Cube(scaleX, 2, scaleZ), { glm::vec3(0,0,-30) ,glm::vec3(scaleX,2,scaleZ),glm::vec3(1,0,0),0 });
 
+	// wall
+	scaleX = 3;
+	scaleZ = 38;
+	wall.addShape(Cube(scaleX, 6, scaleZ), { glm::vec3(0,0,-41) ,glm::vec3(scaleX,6,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 3;
+	scaleZ = 38;
+	wall.addShape(Cube(scaleX, 6, scaleZ), { glm::vec3(38,0,-41) ,glm::vec3(scaleX,6,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 35;
+	scaleZ = 3;
+	wall.addShape(Cube(scaleX, 6, scaleZ), { glm::vec3(3,0,-41) ,glm::vec3(scaleX,6,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 17;
+	scaleZ = 3;
+	wall.addShape(Cube(scaleX, 6, scaleZ), { glm::vec3(0,0,-3) ,glm::vec3(scaleX,6,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 17;
+	scaleZ = 3;
+	wall.addShape(Cube(scaleX, 6, scaleZ), { glm::vec3(24,0,-3) ,glm::vec3(scaleX,6,scaleZ),glm::vec3(1,0,0),0 });
+	scaleX = 7;
+	scaleZ = 3;
+	wall.addShape(Cube(scaleX, 1, scaleZ), { glm::vec3(17,5,-3) ,glm::vec3(scaleX,1,scaleZ),glm::vec3(1,0,0),0 });
+
+	scaleX = 0.5f;
+	scaleZ = 0.5f;
+	//south crenel
+	for(int i = 1; i < 40; i++)
+	{
+		wall.addShape(Cube(0.5f, 0.5f, 0.5f), { glm::vec3(i,6,-0.5) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+		wall.addShape(Cube(0.5f, 0.5f, 0.5f), { glm::vec3(i,6,-41) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+		wall.addShape(Cube(0.5f, 0.5f, 0.5f), { glm::vec3(0,6,-i-1) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+		wall.addShape(Cube(0.5f, 0.5f, 0.5f), { glm::vec3(40.5f,6,-i - 1) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+	}
+
+	for (int i = 3; i < 38; i++)
+	{
+		wall.addShape(Cube(0.5f, 0.5f, 0.5f), { glm::vec3(i,6,-3) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+		wall.addShape(Cube(0.5f, 0.5f, 0.5f), { glm::vec3(i,6,-38.5f) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+		wall.addShape(Cube(0.5f, 0.5f, 0.5f), { glm::vec3(2.5,6,-i - 1) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+		wall.addShape(Cube(0.5f, 0.5f, 0.5f), { glm::vec3(38,6,-i - 1) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+	}
+	scaleX = 5;
+	scaleZ = 5;
+	wall.addShape(Prism(18), { glm::vec3(-1,0,-4) ,glm::vec3(scaleX,10,scaleZ),glm::vec3(1,0,0),0 });
+	wall.addShape(Prism(18), { glm::vec3(37,0,-4) ,glm::vec3(scaleX,10,scaleZ),glm::vec3(1,0,0),0 });
+	wall.addShape(Prism(18), { glm::vec3(-1,0,-42) ,glm::vec3(scaleX,10,scaleZ),glm::vec3(1,0,0),0 });
+	wall.addShape(Prism(18), { glm::vec3(37,0,-42) ,glm::vec3(scaleX,10,scaleZ),glm::vec3(1,0,0),0 });
+
+	wall.addShape(Prism(8), { glm::vec3(13,0,-4) ,glm::vec3(scaleX,8,scaleZ),glm::vec3(1,0,0),0 });
+	wall.addShape(Prism(8), { glm::vec3(23,0,-4) ,glm::vec3(scaleX,8,scaleZ),glm::vec3(1,0,0),0 });
+
+	scaleX = 7;
+	scaleZ = 7;
+	roof.addShape(Cone(18), { glm::vec3(-2,10,-5) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+	roof.addShape(Cone(18), { glm::vec3(36,10,-5) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+	roof.addShape(Cone(18), { glm::vec3(-2,10,-43) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+	roof.addShape(Cone(18), { glm::vec3(36,10,-43) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+
+	roof.addShape(Cone(8), { glm::vec3(12,8,-5) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+	roof.addShape(Cone(8), { glm::vec3(22,8,-5) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
 
 }
 
