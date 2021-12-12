@@ -133,9 +133,6 @@ MazeShape middleRoom;
 void timer(int); // Prototype.
 void makeMaze();
 
-Texture* pTexture = NULL;
-Texture* blankTexture = NULL;
-Texture* waterTexture = NULL;
 Texture* hedgeTexture = nullptr;
 Texture* stoneTexture = nullptr;
 Texture* dirtTexture = nullptr;
@@ -157,22 +154,10 @@ void resetView()
 void loadTextures()
 {
 	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
-	pTexture = new Texture(GL_TEXTURE_2D, "Media/bodyMetal.bmp", GL_RGB);
-	pTexture->Bind(GL_TEXTURE0);
-	pTexture->Load();
-
-	blankTexture = new Texture(GL_TEXTURE_2D, "Media/blank.jpg", GL_RGB);
-	blankTexture->Bind(GL_TEXTURE0);
-	blankTexture->Load();
 
 	hedgeTexture = new Texture(GL_TEXTURE_2D, "Media/grasshedge.jpg", GL_RGB);
 	hedgeTexture->Bind(GL_TEXTURE0);
 	hedgeTexture->Load();
-
-	//! attention: water picture has alpha channel!
-	waterTexture = new Texture(GL_TEXTURE_2D, "Media/Water03.png", GL_RGBA);
-	waterTexture->Bind(GL_TEXTURE0);
-	waterTexture->Load();
 
 	stoneTexture = new Texture(GL_TEXTURE_2D, "Media/stone2.png", GL_RGBA);
 	stoneTexture->Bind(GL_TEXTURE0);
@@ -462,8 +447,6 @@ void idle() // Not even called.
 
 void makeMaze()
 {
-	float scaleX = 1;
-	float scaleZ = 1;
 
 	hedges.setModelID(&modelID);
 	wall.setModelID(&modelID);
