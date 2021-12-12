@@ -117,6 +117,8 @@ Cube g_cube(1);
 MazeShape hedges;
 MazeShape wall;
 MazeShape roof;
+MazeShape door;
+MazeShape stair;
 
 void timer(int); // Prototype.
 void makeMaze();
@@ -129,6 +131,7 @@ Texture* stoneTexture = nullptr;
 Texture* dirtTexture = nullptr;
 Texture* roofTexture = nullptr;
 Texture* woodTexture = nullptr;
+Texture* stoneFloorTexture = nullptr;
 GLuint textureID;
 
 void resetView()
@@ -172,6 +175,15 @@ void loadTextures()
 	roofTexture = new Texture(GL_TEXTURE_2D, "Media/roof.jpg", GL_RGB);
 	roofTexture->Bind(GL_TEXTURE0);
 	roofTexture->Load();
+
+	woodTexture= new Texture(GL_TEXTURE_2D, "Media/wood.jpg", GL_RGB);
+	woodTexture->Bind(GL_TEXTURE0);
+	woodTexture->Load();
+
+	stoneFloorTexture = new Texture(GL_TEXTURE_2D, "Media/stone_floor.png", GL_RGB);
+	stoneFloorTexture->Bind(GL_TEXTURE0);
+	stoneFloorTexture->Load();
+
 
 
 }
@@ -419,6 +431,10 @@ void display(void)
 
 	roof.draw({ -5, 0, 6 }, roofTexture);
 
+	stair.draw({ -5, 0, 6 }, stoneFloorTexture);
+
+	door.draw({ -5, 0, 6 }, woodTexture);
+
 	glutSwapBuffers(); // Now for a potentially smoother render.
 }
 
@@ -435,6 +451,8 @@ void makeMaze()
 	hedges.setModelID(&modelID);
 	wall.setModelID(&modelID);
 	roof.setModelID(&modelID);
+	door.setModelID(&modelID);
+	stair.setModelID(&modelID);
 	// row 0
 	hedges.addShape(Cube(31, 2, 1), { glm::vec3(0,0,0) ,glm::vec3(31,2,1),glm::vec3(1,0,0),0 });
 	// row 1
@@ -866,6 +884,17 @@ void makeMaze()
 
 	roof.addShape(Cone(8), { glm::vec3(12,8,-5) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
 	roof.addShape(Cone(8), { glm::vec3(22,8,-5) ,glm::vec3(scaleX,3,scaleZ),glm::vec3(1,0,0),0 });
+
+	scaleX = 10;
+	scaleZ = 3;
+	stair.addShape(Cube(scaleX,0.5f, scaleZ), { glm::vec3(15,0,-3) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+	scaleZ = 2;
+	stair.addShape(Cube(scaleX, 0.5f, scaleZ), { glm::vec3(15,0.5,-2.5) ,glm::vec3(scaleX,0.5f,scaleZ),glm::vec3(1,0,0),0 });
+
+	scaleX = 2.4;
+	scaleZ = 0.1;
+	door.addShape(Cube(scaleX, 4, scaleZ), { glm::vec3(18,1,-1.5) ,glm::vec3(scaleX,4,scaleZ),glm::vec3(1,0,0),0 });
+	door.addShape(Cube(scaleX, 4, scaleZ), { glm::vec3(20.6,1,-1.5) ,glm::vec3(scaleX,4,scaleZ),glm::vec3(1,0,0),0 });
 
 }
 
